@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class PersonAdapter extends ArrayAdapter<Person> {
 
-    boolean[] itemChecked;
+    public boolean[] itemChecked;
     List<Person> items = new ArrayList<>();
     Context context;
 
@@ -42,8 +42,6 @@ public class PersonAdapter extends ArrayAdapter<Person> {
 
         LayoutInflater inflater = LayoutInflater.from(getContext());
 
-        Person p = getItem(position);
-
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.custom_listview, null);
             holder = new ViewHolder();
@@ -60,12 +58,15 @@ public class PersonAdapter extends ArrayAdapter<Person> {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        holder.apkName.setText(p.getName());
+        Person p = getItem(position);
 
-        if (itemChecked[position])
-            holder.ck1.setChecked(true);
-        else
-            holder.ck1.setChecked(false);
+        if (p != null) {
+            holder.apkName.setText(p.getName());
+            if (itemChecked[position])
+                holder.ck1.setChecked(true);
+            else
+                holder.ck1.setChecked(false);
+        }
 
         holder.ck1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,5 +99,6 @@ public class PersonAdapter extends ArrayAdapter<Person> {
     public long getItemId(int position) {
         return 0;
     }
+
 
 }

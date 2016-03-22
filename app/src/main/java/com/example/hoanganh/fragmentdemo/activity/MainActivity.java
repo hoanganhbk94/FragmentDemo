@@ -49,7 +49,7 @@ public class MainActivity extends FragmentActivity implements ListItemFragment.O
         CheckedItemFragment newFragment = new CheckedItemFragment();
         newFragment.setArguments(bundle);
 
-        int[] a = bundle.getIntArray("AAA");
+        boolean[] a = bundle.getBooleanArray("AAA");
         //Toast.makeText(this, String.valueOf(a.length), Toast.LENGTH_SHORT).show();
 
         FragmentTransaction transaction = getFragmentManager().beginTransaction();

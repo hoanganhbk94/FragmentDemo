@@ -81,9 +81,11 @@ public class CheckedItemFragment extends Fragment {
         // below that sets the article text.
         Bundle args = getArguments();
         if (args != null) {
-            int a[] = args.getIntArray("AAA");
+            boolean a[] = args.getBooleanArray("AAA");
             for (int i = 0; i < a.length; i++) {
-                selectedList.add(PersonArrays.personList.get(a[i]));
+                if (a[i] == true) {
+                    selectedList.add(PersonArrays.personList.get(i));
+                }
             }
         }
 

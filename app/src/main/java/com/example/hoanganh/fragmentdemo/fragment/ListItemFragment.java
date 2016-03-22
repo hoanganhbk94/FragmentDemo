@@ -7,15 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.ListView;
 
 import com.example.hoanganh.fragmentdemo.R;
 import com.example.hoanganh.fragmentdemo.Utils.PersonArrays;
 import com.example.hoanganh.fragmentdemo.adapter.PersonAdapter;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by HoangAnh on 3/20/2016.
@@ -23,6 +19,7 @@ import java.util.List;
 public class ListItemFragment extends Fragment {
 
     ListView listView;
+    PersonAdapter adapter;
     Button btnNext;
 
     OnNextListener mCallback;
@@ -42,7 +39,7 @@ public class ListItemFragment extends Fragment {
 
         listView = (ListView) rootView.findViewById(R.id.listPerson);
 
-        PersonAdapter adapter = new PersonAdapter(getActivity(),
+        adapter = new PersonAdapter(getActivity(),
                 R.layout.custom_listview, PersonArrays.personList);
         listView.setAdapter(adapter);
 
@@ -53,35 +50,13 @@ public class ListItemFragment extends Fragment {
             public void onClick(View view) {
                 Bundle bundle = new Bundle();
 
-                List<Integer> array = loadSelectedPerson();
-                int[] a = new int[array.size()];
-                for (int i = 0; i < array.size(); i++) {
-                    a[i] = array.get(i);
-                }
-
-                bundle.putIntArray("AAA", a);
+                bundle.putBooleanArray("AAA", adapter.itemChecked);
 
                 mCallback.onPersonNext(bundle);
             }
         });
 
         return rootView;
-    }
-
-    public List<Integer> loadSelectedPerson() {
-        List<Integer> list = new ArrayList<>();
-
-        for (int i = 0; i < listView.getCount(); i++) {
-            View v = (View) listView.getChildAt(i);
-            if (v != null) {
-                CheckBox c = (CheckBox) v.findViewById(R.id.checkBox);
-                if (c.isChecked()) {
-                    list.add(i);
-                }
-            }
-        }
-        return list;
-
     }
 
     @Override
