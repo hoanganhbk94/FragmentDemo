@@ -10,7 +10,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.hoanganh.fragmentdemo.R;
-import com.example.hoanganh.fragmentdemo.Utils.PersonArrays;
+import com.example.hoanganh.fragmentdemo.utils.PersonArrays;
 import com.example.hoanganh.fragmentdemo.adapter.SelectedPersonAdapter;
 import com.example.hoanganh.fragmentdemo.entity.Person;
 
@@ -81,6 +81,9 @@ public class CheckedItemFragment extends Fragment {
         // below that sets the article text.
         Bundle args = getArguments();
         if (args != null) {
+            if(args.getBooleanArray("AAA")==null)
+                return;
+
             boolean a[] = args.getBooleanArray("AAA");
             for (int i = 0; i < a.length; i++) {
                 if (a[i] == true) {
@@ -88,7 +91,6 @@ public class CheckedItemFragment extends Fragment {
                 }
             }
         }
-
 
     }
 

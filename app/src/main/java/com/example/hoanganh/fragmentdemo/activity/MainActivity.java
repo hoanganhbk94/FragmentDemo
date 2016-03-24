@@ -13,27 +13,28 @@ import com.example.hoanganh.fragmentdemo.fragment.ListItemFragment;
 public class MainActivity extends FragmentActivity implements ListItemFragment.OnNextListener,
         CheckedItemFragment.OnClcikItemListener {
 
+    public static final String LIST_ITEM_SELECTED = "LIST_ITEM_SELECTED";
+
+    ListItemFragment firstFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        firstFragment = new ListItemFragment();
+
+        // Get data from onSaveInstanceState
+        if (savedInstanceState != null) {
+            firstFragment.setArguments(savedInstanceState);
+        }
+
         // Check screen orientation
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-            if (savedInstanceState != null) {
-                return;
-            }
-
-            ListItemFragment firstFragment = new ListItemFragment();
-            firstFragment.setArguments(getIntent().getExtras());
-
             getFragmentManager().beginTransaction()
                     .add(R.id.fragment_container, firstFragment).commit();
         } else {
-            ListItemFragment firstFragment = new ListItemFragment();
             CheckedItemFragment secondFragment = new CheckedItemFragment();
-
-            firstFragment.setArguments(getIntent().getExtras());
 
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             transaction.add(R.id.fragment1, firstFragment);
@@ -45,42 +46,79 @@ public class MainActivity extends FragmentActivity implements ListItemFragment.O
     }
 
     @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+
+        savedInstanceState.clear();
+
+        savedInstanceState.putBooleanArray(LIST_ITEM_SELECTED, firstFragment.adapter.getItemChecked());
+    }
+
+    @Override
     public void onPersonNext(Bundle bundle) {
-        CheckedItemFragment newFragment = new CheckedItemFragment();
-        newFragment.setArguments(bundle);
 
-        boolean[] a = bundle.getBooleanArray("AAA");
-        //Toast.makeText(this, String.valueOf(a.length), Toast.LENGTH_SHORT).show();
+        // Check orientation
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            CheckedItemFragment newFragment = new CheckedItemFragment();
+            newFragment.setArguments(bundle);
 
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
+            // Replace whatever is in the fragment_container view with this fragment,
+            // and add the transaction to the back stack so the user can navigate back
+            transaction.replace(R.id.fragment2, newFragment);
+            //transaction.addToBackStack(null);
 
-        // Replace whatever is in the fragment_container view with this fragment,
-        // and add the transaction to the back stack so the user can navigate back
-        transaction.replace(R.id.fragment_container, newFragment);
-        transaction.addToBackStack(null);
+            // Commit the transaction
+            transaction.commit();
 
-        // Commit the transaction
-        transaction.commit();
+        } else {
+            CheckedItemFragment newFragment = new CheckedItemFragment();
+            newFragment.setArguments(bundle);
+
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+            // Replace whatever is in the fragment_container view with this fragment,
+            // and add the transaction to the back stack so the user can navigate back
+            transaction.replace(R.id.fragment_container, newFragment);
+            transaction.addToBackStack(null);
+
+            // Commit the transaction
+            transaction.commit();
+        }
+
     }
 
     @Override
     public void onClickItemListenner(Bundle bundle) {
-        DetailFragment newFragment = new DetailFragment();
-        newFragment.setArguments(bundle);
 
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            DetailFragment newFragment = new DetailFragment();
+            newFragment.setArguments(bundle);
 
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
-        //Person p = (Person) bundle.getSerializable("BBB");
-        //Toast.makeText(this, p.getName(), Toast.LENGTH_SHORT).show();
+            // Replace whatever is in the fragment_container view with this fragment,
+            // and add the transaction to the back stack so the user can navigate back
+            transaction.replace(R.id.fragment_container, newFragment);
+            transaction.addToBackStack(null);
 
-        // Replace whatever is in the fragment_container view with this fragment,
-        // and add the transaction to the back stack so the user can navigate back
-        transaction.replace(R.id.fragment_container, newFragment);
-        transaction.addToBackStack(null);
+            // Commit the transaction
+            transaction.commit();
+        } else {
+            DetailFragment newFragment = new DetailFragment();
+            newFragment.setArguments(bundle);
 
-        // Commit the transaction
-        transaction.commit();
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+            // Replace whatever is in the fragment_container view with this fragment,
+            // and add the transaction to the back stack so the user can navigate back
+            transaction.replace(R.id.fragment2, newFragment);
+            transaction.addToBackStack(null);
+
+            // Commit the transaction
+            transaction.commit();
+        }
+
     }
 }

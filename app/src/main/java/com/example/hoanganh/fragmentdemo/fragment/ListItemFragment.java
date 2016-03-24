@@ -10,17 +10,20 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import com.example.hoanganh.fragmentdemo.R;
-import com.example.hoanganh.fragmentdemo.Utils.PersonArrays;
 import com.example.hoanganh.fragmentdemo.adapter.PersonAdapter;
+import com.example.hoanganh.fragmentdemo.utils.PersonArrays;
 
 /**
  * Created by HoangAnh on 3/20/2016.
  */
 public class ListItemFragment extends Fragment {
+    public static final String LIST_ITEM_SELECTED = "LIST_ITEM_SELECTED";
 
     ListView listView;
-    PersonAdapter adapter;
+    public PersonAdapter adapter;
     Button btnNext;
+
+    boolean flag = true;
 
     OnNextListener mCallback;
 
@@ -37,12 +40,15 @@ public class ListItemFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_1, container, false);
 
+
         listView = (ListView) rootView.findViewById(R.id.listPerson);
 
+        if (flag) {
         adapter = new PersonAdapter(getActivity(),
                 R.layout.custom_listview, PersonArrays.personList);
-        listView.setAdapter(adapter);
+        }
 
+        listView.setAdapter(adapter);
 
         btnNext = (Button) rootView.findViewById(R.id.btnNext);
         btnNext.setOnClickListener(new View.OnClickListener() {
@@ -50,7 +56,7 @@ public class ListItemFragment extends Fragment {
             public void onClick(View view) {
                 Bundle bundle = new Bundle();
 
-                bundle.putBooleanArray("AAA", adapter.itemChecked);
+                bundle.putBooleanArray("AAA", adapter.getItemChecked());
 
                 mCallback.onPersonNext(bundle);
             }
@@ -65,14 +71,26 @@ public class ListItemFragment extends Fragment {
 
         // When in two-pane layout, set the listview to highlight the selected list item
         // (We do this during onStart because at the point the listview is available.)
-        if (getFragmentManager().findFragmentById(R.id.fragment1) != null) {
-
-        }
     }
 
     @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        super.onSaveInstanceState(savedInstanceState);
+    public void onCreate(Bundle bundle) {
+        super.onCreate(bundle);
+
+        // During startup, check if there are arguments passed to the fragment.
+        // onStart is a good place to do this because the layout has already been
+        // applied to the fragment at this point so we can safely call the method
+        // below that sets the article text.
+        Bundle args = getArguments();
+        if (args != null) {
+            adapter = new PersonAdapter(getActivity(),
+                    R.layout.custom_listview, PersonArrays.personList);
+
+            adapter.setItemChecked(args.getBooleanArray(LIST_ITEM_SELECTED));
+
+            flag = false;
+        }
+
     }
 
     @Override

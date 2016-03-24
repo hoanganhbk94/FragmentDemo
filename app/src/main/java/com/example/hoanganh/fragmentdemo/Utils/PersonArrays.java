@@ -1,4 +1,4 @@
-package com.example.hoanganh.fragmentdemo.Utils;
+package com.example.hoanganh.fragmentdemo.utils;
 
 import com.example.hoanganh.fragmentdemo.entity.Person;
 

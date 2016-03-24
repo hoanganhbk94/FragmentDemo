@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class PersonAdapter extends ArrayAdapter<Person> {
 
-    public boolean[] itemChecked;
+    private boolean[] itemChecked;
     List<Person> items = new ArrayList<>();
     Context context;
 
@@ -100,5 +100,11 @@ public class PersonAdapter extends ArrayAdapter<Person> {
         return 0;
     }
 
+    public boolean[] getItemChecked() {
+        return itemChecked;
+    }
 
+    public void setItemChecked(boolean[] itemChecked) {
+        this.itemChecked = itemChecked;
+    }
 }
