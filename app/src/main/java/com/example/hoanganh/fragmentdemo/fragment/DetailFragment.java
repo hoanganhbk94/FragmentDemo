@@ -14,6 +14,8 @@ import com.example.hoanganh.fragmentdemo.entity.Person;
  * Created by HoangAnh on 3/20/2016.
  */
 public class DetailFragment extends Fragment {
+    public static final String PERSON_SELECTED_1 = "PERSON_SELECTED_1";
+
     TextView txtName, txtBirthDay, txtSex;
     Person p;
 
@@ -21,10 +23,6 @@ public class DetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_3, container, false);
-
-
-        //Toast.makeText(getActivity(), "BBB", Toast.LENGTH_SHORT).show();
-        //Toast.makeText(getActivity(), String.valueOf(selectedPerson), Toast.LENGTH_SHORT).show();
 
         txtName = (TextView) rootView.findViewById(R.id.txtName);
         txtName.setText(p.getName());
@@ -47,7 +45,7 @@ public class DetailFragment extends Fragment {
         // below that sets the article text.
         Bundle args = getArguments();
         if (args != null) {
-            p = (Person) args.get("BBB");
+            p = (Person) args.get(PERSON_SELECTED_1);
         }
 
     }

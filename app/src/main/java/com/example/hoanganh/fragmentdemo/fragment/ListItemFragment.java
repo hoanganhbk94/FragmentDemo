@@ -18,6 +18,7 @@ import com.example.hoanganh.fragmentdemo.utils.PersonArrays;
  */
 public class ListItemFragment extends Fragment {
     public static final String LIST_ITEM_SELECTED = "LIST_ITEM_SELECTED";
+    public static final String PERSON_SELECTED = "PERSON_SELECTED";
 
     ListView listView;
     public PersonAdapter adapter;
@@ -56,7 +57,7 @@ public class ListItemFragment extends Fragment {
             public void onClick(View view) {
                 Bundle bundle = new Bundle();
 
-                bundle.putBooleanArray("AAA", adapter.getItemChecked());
+                bundle.putBooleanArray(PERSON_SELECTED, adapter.getItemChecked());
 
                 mCallback.onPersonNext(bundle);
             }

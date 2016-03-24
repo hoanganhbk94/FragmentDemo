@@ -50,7 +50,6 @@ public class MainActivity extends FragmentActivity implements ListItemFragment.O
         super.onSaveInstanceState(savedInstanceState);
 
         savedInstanceState.clear();
-
         savedInstanceState.putBooleanArray(LIST_ITEM_SELECTED, firstFragment.adapter.getItemChecked());
     }
 
@@ -67,7 +66,7 @@ public class MainActivity extends FragmentActivity implements ListItemFragment.O
             // Replace whatever is in the fragment_container view with this fragment,
             // and add the transaction to the back stack so the user can navigate back
             transaction.replace(R.id.fragment2, newFragment);
-            //transaction.addToBackStack(null);
+            transaction.addToBackStack(null);
 
             // Commit the transaction
             transaction.commit();
@@ -120,5 +119,15 @@ public class MainActivity extends FragmentActivity implements ListItemFragment.O
             transaction.commit();
         }
 
+    }
+
+    // Override back button
+    @Override
+    public void onBackPressed() {
+        if (getFragmentManager().getBackStackEntryCount() == 0) {
+            this.finish();
+        } else {
+            getFragmentManager().popBackStack();
+        }
     }
 }

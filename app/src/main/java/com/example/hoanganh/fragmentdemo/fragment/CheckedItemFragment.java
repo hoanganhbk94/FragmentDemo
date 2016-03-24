@@ -21,6 +21,9 @@ import java.util.List;
  * Created by HoangAnh on 3/20/2016.
  */
 public class CheckedItemFragment extends Fragment {
+    public static final String PERSON_SELECTED = "PERSON_SELECTED";
+    public static final String PERSON_SELECTED_1 = "PERSON_SELECTED_1";
+
     ListView listView;
     List<Person> selectedList = new ArrayList<>();
 
@@ -61,7 +64,7 @@ public class CheckedItemFragment extends Fragment {
 
                 //Toast.makeText(getActivity(), p.getName(), Toast.LENGTH_SHORT).show();
 
-                bundle.putSerializable("BBB", p);
+                bundle.putSerializable(PERSON_SELECTED_1, p);
                 mCallback.onClickItemListenner(bundle);
             }
         });
@@ -81,10 +84,10 @@ public class CheckedItemFragment extends Fragment {
         // below that sets the article text.
         Bundle args = getArguments();
         if (args != null) {
-            if(args.getBooleanArray("AAA")==null)
+            if(args.getBooleanArray(PERSON_SELECTED)==null)
                 return;
 
-            boolean a[] = args.getBooleanArray("AAA");
+            boolean a[] = args.getBooleanArray(PERSON_SELECTED);
             for (int i = 0; i < a.length; i++) {
                 if (a[i] == true) {
                     selectedList.add(PersonArrays.personList.get(i));
