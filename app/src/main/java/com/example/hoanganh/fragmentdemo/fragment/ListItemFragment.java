@@ -45,7 +45,7 @@ public class ListItemFragment extends Fragment {
         listView = (ListView) rootView.findViewById(R.id.listPerson);
 
         if (flag) {
-        adapter = new PersonAdapter(getActivity(),
+            adapter = new PersonAdapter(getActivity(),
                 R.layout.custom_listview, PersonArrays.personList);
         }
 

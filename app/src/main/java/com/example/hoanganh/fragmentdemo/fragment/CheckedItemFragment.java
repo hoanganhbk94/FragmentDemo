@@ -2,6 +2,7 @@ package com.example.hoanganh.fragmentdemo.fragment;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,9 +11,9 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.hoanganh.fragmentdemo.R;
-import com.example.hoanganh.fragmentdemo.utils.PersonArrays;
 import com.example.hoanganh.fragmentdemo.adapter.SelectedPersonAdapter;
 import com.example.hoanganh.fragmentdemo.entity.Person;
+import com.example.hoanganh.fragmentdemo.utils.PersonArrays;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +28,8 @@ public class CheckedItemFragment extends Fragment {
     ListView listView;
     List<Person> selectedList = new ArrayList<>();
 
+    boolean[] a;
+
     OnClcikItemListener mCallback;
 
     // The container Activity must implement this interface so the frag can deliver messages
@@ -40,12 +43,6 @@ public class CheckedItemFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        if (savedInstanceState != null) {
-            // Get data
-        }
-
-
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_2, container, false);
 
@@ -61,8 +58,6 @@ public class CheckedItemFragment extends Fragment {
                 Bundle bundle = new Bundle();
 
                 Person p = (Person) listView.getItemAtPosition(i);
-
-                //Toast.makeText(getActivity(), p.getName(), Toast.LENGTH_SHORT).show();
 
                 bundle.putSerializable(PERSON_SELECTED_1, p);
                 mCallback.onClickItemListenner(bundle);
@@ -87,7 +82,7 @@ public class CheckedItemFragment extends Fragment {
             if(args.getBooleanArray(PERSON_SELECTED)==null)
                 return;
 
-            boolean a[] = args.getBooleanArray(PERSON_SELECTED);
+            a = args.getBooleanArray(PERSON_SELECTED);
             for (int i = 0; i < a.length; i++) {
                 if (a[i] == true) {
                     selectedList.add(PersonArrays.personList.get(i));
@@ -110,4 +105,24 @@ public class CheckedItemFragment extends Fragment {
                     + " must implement OnClcikItemListener");
         }
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        // Use Shared Preferences to save data
+        SharedPreferences previewSizePref = getActivity().getSharedPreferences("PREF", getActivity().MODE_PRIVATE);
+        SharedPreferences.Editor prefEditor = previewSizePref.edit();
+
+        prefEditor.putInt("ArrayLength", a.length);
+        for (int i = 0; i < a.length; i++) {
+            if (a[i] == true) {
+                prefEditor.putInt(String.valueOf(i), i);
+            }
+        }
+
+        prefEditor.commit();
+
+    }
+
 }

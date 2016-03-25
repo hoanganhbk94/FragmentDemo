@@ -1,6 +1,7 @@
 package com.example.hoanganh.fragmentdemo.fragment;
 
 import android.app.Fragment;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,6 +48,22 @@ public class DetailFragment extends Fragment {
         if (args != null) {
             p = (Person) args.get(PERSON_SELECTED_1);
         }
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        // Use Shared Preferences to save data
+        SharedPreferences previewSizePref = getActivity().getSharedPreferences("PREF", getActivity().MODE_PRIVATE);
+        SharedPreferences.Editor prefEditor = previewSizePref.edit();
+
+        prefEditor.putString("name", p.getName());
+        prefEditor.putString("day", p.getBirthDay());
+        prefEditor.putBoolean("sex", p.isSex());
+
+        prefEditor.commit();
 
     }
 }
