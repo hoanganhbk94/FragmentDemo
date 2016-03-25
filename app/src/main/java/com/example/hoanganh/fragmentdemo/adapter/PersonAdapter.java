@@ -49,7 +49,7 @@ public class PersonAdapter extends ArrayAdapter<Person> {
             holder.apkName = (TextView) convertView
                     .findViewById(R.id.name1);
             holder.ck1 = (CheckBox) convertView
-                    .findViewById(R.id.checkBox);
+                    .findViewById(R.id.checkBox1);
 
 
             convertView.setTag(holder);
