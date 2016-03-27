@@ -23,34 +23,28 @@ public class PersonAdapter extends ArrayAdapter<Person> {
     List<Person> items = new ArrayList<>();
     Context context;
 
-    public PersonAdapter(Context context, int resource) {
-        super(context, resource);
-    }
-
-    public PersonAdapter(Context context, int resource, List<Person> items) {
+    public PersonAdapter(Context context, int resource, List<Person> items, boolean[] personCheck) {
         super(context, resource, items);
 
         this.items = items;
         this.context = context;
-
-        itemChecked = new boolean[items.size()];
+        itemChecked = personCheck;
     }
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         final ViewHolder holder;
-
         LayoutInflater inflater = LayoutInflater.from(getContext());
 
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.custom_listview, null);
-            holder = new ViewHolder();
 
+
+            holder = new ViewHolder();
             holder.apkName = (TextView) convertView
                     .findViewById(R.id.name1);
             holder.ck1 = (CheckBox) convertView
                     .findViewById(R.id.checkBox1);
-
 
             convertView.setTag(holder);
 
@@ -72,7 +66,7 @@ public class PersonAdapter extends ArrayAdapter<Person> {
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
-                if (holder.ck1.isChecked())
+                if (((CheckBox) v).isChecked())
                     itemChecked[position] = true;
                 else
                     itemChecked[position] = false;
@@ -104,7 +98,4 @@ public class PersonAdapter extends ArrayAdapter<Person> {
         return itemChecked;
     }
 
-    public void setItemChecked(boolean[] itemChecked) {
-        this.itemChecked = itemChecked;
-    }
 }

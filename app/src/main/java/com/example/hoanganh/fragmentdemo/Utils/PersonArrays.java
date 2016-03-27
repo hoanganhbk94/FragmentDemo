@@ -19,11 +19,10 @@ public class PersonArrays {
             Random random = new Random();
             int r = random.nextInt(2);
 
-            p[i] = new Person("Person " + i, i + "/" + i, (r==1)?true:false);
+            p[i] = new Person( String.format("Person %d",i), String.format("%d/%d", i, i), (r==1)?true:false);
 
             personList.add(p[i]);
         }
-
     }
 
 }

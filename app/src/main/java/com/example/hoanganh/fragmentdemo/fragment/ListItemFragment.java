@@ -1,111 +1,118 @@
 package com.example.hoanganh.fragmentdemo.fragment;
 
-import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ListView;
 
 import com.example.hoanganh.fragmentdemo.R;
 import com.example.hoanganh.fragmentdemo.adapter.PersonAdapter;
-import com.example.hoanganh.fragmentdemo.utils.PersonArrays;
+import com.example.hoanganh.fragmentdemo.entity.Person;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by HoangAnh on 3/20/2016.
  */
 public class ListItemFragment extends Fragment {
-    public static final String LIST_ITEM_SELECTED = "LIST_ITEM_SELECTED";
-    public static final String PERSON_SELECTED = "PERSON_SELECTED";
+    private static final int CONTAINER = R.id.fragment_container;
+    private static final String PERSON_LIST = "PERSON_LIST";
+    private static final String LIST_ITEM_SELECTED = "LIST_ITEM_SELECTED";
 
-    ListView listView;
-    public PersonAdapter adapter;
-    Button btnNext;
+    private ListView listView;
+    private PersonAdapter adapter;
+    private List<Person> mPersonList;
+    private boolean[] mPersonSelected;
 
-    boolean flag = true;
-
-    OnNextListener mCallback;
-
-    // The container Activity must implement this interface so the frag can deliver messages
-    public interface OnNextListener {
-        /**
-         * Called by ListItemFragment when a press button NEXT
-         */
-        public void onPersonNext(Bundle bundle);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_1, container, false);
-
-
-        listView = (ListView) rootView.findViewById(R.id.listPerson);
-
-        if (flag) {
-            adapter = new PersonAdapter(getActivity(),
-                R.layout.custom_listview, PersonArrays.personList);
-        }
-
-        listView.setAdapter(adapter);
-
-        btnNext = (Button) rootView.findViewById(R.id.btnNext);
-        btnNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Bundle bundle = new Bundle();
-
-                bundle.putBooleanArray(PERSON_SELECTED, adapter.getItemChecked());
-
-                mCallback.onPersonNext(bundle);
-            }
-        });
-
-        return rootView;
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        // When in two-pane layout, set the listview to highlight the selected list item
-        // (We do this during onStart because at the point the listview is available.)
+    public static ListItemFragment newInstance(List<Person> personList) {
+        Bundle args = new Bundle();
+        args.putSerializable(PERSON_LIST, (Serializable) personList);
+        ListItemFragment fragment = new ListItemFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
-
-        // During startup, check if there are arguments passed to the fragment.
-        // onStart is a good place to do this because the layout has already been
-        // applied to the fragment at this point so we can safely call the method
-        // below that sets the article text.
-        Bundle args = getArguments();
-        if (args != null) {
-            adapter = new PersonAdapter(getActivity(),
-                    R.layout.custom_listview, PersonArrays.personList);
-
-            adapter.setItemChecked(args.getBooleanArray(LIST_ITEM_SELECTED));
-
-            flag = false;
+        if (bundle != null) {
+            getDataFromBundle(bundle);
+        } else {
+            getDataFromBundle(getArguments());
         }
+    }
+
+    private void getDataFromBundle(Bundle bundle) {
+        if (bundle == null) return;
+        mPersonList = (ArrayList) bundle.getSerializable(PERSON_LIST);
+
+        if (bundle.getBooleanArray(LIST_ITEM_SELECTED) != null) {
+            mPersonSelected = bundle.getBooleanArray(LIST_ITEM_SELECTED);
+        } else {
+            mPersonSelected = new boolean[mPersonList.size()];
+        }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_1, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Log.d("AAA", "ListItem Fragment onViewCreated()");
+
+        listView = (ListView) view.findViewById(R.id.listPerson);
+
+        view.findViewById(R.id.btnNext).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //TODO next fragment
+                List<Person> sendList = new ArrayList<Person>();
+                for (int i = 0; i < mPersonSelected.length; i++) {
+                    if (mPersonSelected[i] == true) {
+                        sendList.add(mPersonList.get(i));
+                    }
+                }
+
+                nextCheckedItemFragment(sendList);
+            }
+        });
+    }
+
+    private void nextCheckedItemFragment(List<Person> sendList) {
+
+        CheckedItemFragment fragment = CheckedItemFragment.newInstance(sendList);
+
+        FragmentTransaction fragmentTransaction = getActivity().getFragmentManager().beginTransaction();
+        fragmentTransaction.replace(CONTAINER, fragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
 
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-
-        // This makes sure that the container activity has implemented
-        // the callback interface. If not, it throws an exception.
-        try {
-            mCallback = (OnNextListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnNextListener");
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (mPersonList != null) {
+            adapter = new PersonAdapter(getActivity(),
+                    R.layout.custom_listview, mPersonList, mPersonSelected);
         }
+        listView.setAdapter(adapter);
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(PERSON_LIST, (Serializable) mPersonList);
+        outState.putBooleanArray(LIST_ITEM_SELECTED, mPersonSelected);
+    }
 }
