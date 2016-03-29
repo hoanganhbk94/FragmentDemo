@@ -76,6 +76,8 @@ public class ListItemFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 //TODO next fragment
+
+                //TODO nếu person có 1 triệu phần tử thì sẽ  có vấn đề
                 List<Person> sendList = new ArrayList<Person>();
                 for (int i = 0; i < mPersonSelected.length; i++) {
                     if (mPersonSelected[i] == true) {
@@ -91,7 +93,6 @@ public class ListItemFragment extends Fragment {
     private void nextCheckedItemFragment(List<Person> sendList) {
 
         CheckedItemFragment fragment = CheckedItemFragment.newInstance(sendList);
-
         FragmentTransaction fragmentTransaction = getActivity().getFragmentManager().beginTransaction();
         fragmentTransaction.replace(CONTAINER, fragment);
         fragmentTransaction.addToBackStack(null);
@@ -106,6 +107,7 @@ public class ListItemFragment extends Fragment {
             adapter = new PersonAdapter(getActivity(),
                     R.layout.custom_listview, mPersonList, mPersonSelected);
         }
+        // TODO nếu null thì sẽ làm gì
         listView.setAdapter(adapter);
     }
 

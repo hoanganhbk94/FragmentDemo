@@ -11,7 +11,7 @@ public class Person implements Serializable{
     private String birthDay;
     private boolean sex;
 
-    // Contructors
+    // Constructor
     public Person() {
     }
 

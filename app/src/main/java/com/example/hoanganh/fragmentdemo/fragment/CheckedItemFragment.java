@@ -72,7 +72,7 @@ public class CheckedItemFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                //TODO next Detail Fragment
+                //TODO check null
                 DetailFragment fragment = DetailFragment.newInstance((Person) adapterView.getItemAtPosition(i));
                 FragmentTransaction fragmentTransaction = getActivity().getFragmentManager().beginTransaction();
                 fragmentTransaction.replace(CONTAINER, fragment);

@@ -24,6 +24,9 @@ public class SelectedPersonAdapter extends ArrayAdapter<Person> {
         super(context, resource, items);
     }
 
+
+    //TODO không infalater kiểu null
+    //
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
@@ -36,7 +39,7 @@ public class SelectedPersonAdapter extends ArrayAdapter<Person> {
         }
 
         Person p = getItem(position);
-
+//TODO dùng view holder
         if (p != null) {
             // Anh xa + Gan gia tri
             TextView textView = (TextView) v.findViewById(R.id.name2);

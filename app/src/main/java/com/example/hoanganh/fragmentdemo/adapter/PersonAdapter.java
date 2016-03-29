@@ -18,7 +18,7 @@ import java.util.List;
  * Created by HoangAnh on 3/21/2016.
  */
 public class PersonAdapter extends ArrayAdapter<Person> {
-
+    //TODO thiếu modifier
     private boolean[] itemChecked;
     List<Person> items = new ArrayList<>();
     Context context;
@@ -35,7 +35,7 @@ public class PersonAdapter extends ArrayAdapter<Person> {
     public View getView(final int position, View convertView, ViewGroup parent) {
         final ViewHolder holder;
         LayoutInflater inflater = LayoutInflater.from(getContext());
-
+// TODO không infalate null
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.custom_listview, null);
 
@@ -61,7 +61,7 @@ public class PersonAdapter extends ArrayAdapter<Person> {
             else
                 holder.ck1.setChecked(false);
         }
-
+// TODO không new onclick ở đây
         holder.ck1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,15 +77,18 @@ public class PersonAdapter extends ArrayAdapter<Person> {
 
     }
 
+    //TODO không nên dùng inner class trong trường hợp này
     private class ViewHolder {
         TextView apkName;
         CheckBox ck1;
     }
 
+    //check null
     public int getCount() {
         return items.size();
     }
 
+    // check null
     public Person getItem(int position) {
         return items.get(position);
     }

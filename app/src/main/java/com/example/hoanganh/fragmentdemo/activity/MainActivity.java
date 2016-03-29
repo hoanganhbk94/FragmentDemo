@@ -6,8 +6,8 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 
 import com.example.hoanganh.fragmentdemo.R;
+import com.example.hoanganh.fragmentdemo.Utils.PersonArrays;
 import com.example.hoanganh.fragmentdemo.fragment.ListItemFragment;
-import com.example.hoanganh.fragmentdemo.utils.PersonArrays;
 
 public class MainActivity extends FragmentActivity {
     private static final int CONTAINER = R.id.fragment_container;
@@ -27,6 +27,7 @@ public class MainActivity extends FragmentActivity {
         Log.d("AAA", "MainActivity onCreate()");
     }
 
+    // TODO không cần thiết
     @Override
     public void onBackPressed() {
         if (getFragmentManager().getBackStackEntryCount() == 0) {
